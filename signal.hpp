@@ -2,6 +2,7 @@
 
 template< typename... ARGS > class Signal {
 public:
+    Signal( ) = default;
     Signal( const Signal< ARGS... > & ) = delete;
     Signal &operator=( const Signal< ARGS... > & ) = delete;
 
@@ -28,6 +29,7 @@ private:
 
 template< > class Signal< void > {
 public:
+    Signal( ) = default;
     Signal( const Signal< > & ) = delete;
     Signal &operator=( const Signal< > & ) = delete;
 
