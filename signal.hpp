@@ -6,6 +6,9 @@ public:
     Signal( const Signal< ARGS... > & ) = delete;
     Signal &operator=( const Signal< ARGS... > & ) = delete;
 
+    operator bool( ) const noexcept { return m_callback.operator bool( ); }
+    bool operator!( ) const noexcept { return !operator bool( ); }
+
     template< typename F > void connect( F &&fn ) {
         m_callback = std::move( fn );
     }
@@ -33,11 +36,14 @@ public:
     Signal( const Signal< > & ) = delete;
     Signal &operator=( const Signal< > & ) = delete;
 
+    operator bool( ) const noexcept { return m_callback.operator bool( ); }
+    bool operator!( ) const noexcept { return !operator bool( ); }
+
     template< typename F > void connect( F &&fn ) {
         m_callback = std::move( fn );
     }
     template< typename RET, typename CLASS > void connect( CLASS *instance, RET (CLASS::*fn)( ) ) {
-        m_callback = [instance, fn]( ARGS... args ) -> void { (instance->*fn)( ); };
+        m_callback = [instance, fn]( ) -> void { (instance->*fn)( ); };
     }
     void connect( Signal< > &other ) {
         m_callback = [&other]( ) -> void { other.emit( ); };
