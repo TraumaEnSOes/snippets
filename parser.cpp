@@ -1,4 +1,3 @@
-#include <cassert>
 #include <cstddef>
 #include <initializer_list>
 #include <iostream>
@@ -48,16 +47,9 @@ bool END::validate( ) const {
     return false;
 }
 
-template< typename T > struct ItemBase : public Item {
-    ItemBase( const char *name ) :
-        Item( name, sizeof( T ) )
-    {
-    }
-};
-
-template< typename T > struct Atom : public ItemBase< Atom< T > > {
+template< typename T > struct Atom : public Item {
     Atom( const char *name, std::optional< T > defValue = std::optional< T >( ) ) :
-        ItemBase< Atom< T > >( name ),
+        Item( name, sizeof( *this ) ),
         defaultValue( std::move( defValue ) )
     {
     }
@@ -72,9 +64,9 @@ private:
     bool validate( ) const override { return true; }
 };
 
-template< typename T > struct GenericEnum : public ItemBase< GenericEnum< T > > {
+template< typename T > struct GenericEnum : public Item {
     GenericEnum( const char *name, std::initializer_list< T > values, std::optional< T > defValue = std::optional< T >( ) ) :
-        ItemBase< GenericEnum< T > >( name ),
+        Item( name, sizeof( *this ) ),
         validValues( values ),
         defaultValue( std::move( defValue ) )
     {
