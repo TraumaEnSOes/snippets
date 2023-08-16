@@ -21,7 +21,7 @@ bool quickPerm( T *a, size_t N, CB &&cb ) {
     size_t i = 1U;
     while( i < N ) {
         p[i]--;
-        size_t j = i % 2 * p[1];
+        size_t j = i % 2 * p[i];
         std::swap( a[j], a[i] );
 
         i = 1U;
